@@ -1,4 +1,3 @@
-/* AMCO @ 2018 */
 package meli.mutantdetector.api;
 
 import meli.mutantdetector.api.handler.MutantDetectorHandler;
@@ -13,7 +12,7 @@ public class MutantDetectorAPI {
     }
     
     public void start() {
-        _httpHost.registerHandler(new MutantDetectorHandler("/api/mutant"));
+        _httpHost.registerHandler(new MutantDetectorHandler("/mutant/"));
         _httpHost.start();
     }
 

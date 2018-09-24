@@ -1,13 +1,12 @@
 package meli.mutantdetector.api.handler;
 
-import meli.mutantdetector.api.http.HttpResponse;
 import ace.gson.builders.JsonObjectBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import meli.mutantdetector.api.MutantDetectorAPI;
-import meli.mutantdetector.api.http.HttpRequest;
-import meli.mutantdetector.api.http.RestJsonPostHandler;
 import org.apache.log4j.Logger;
+import whiz.net.servers.HttpRequest;
+import whiz.net.servers.RestJsonPostHandler;
 
 public abstract class LocalPostHandler extends RestJsonPostHandler {
     
@@ -25,40 +24,27 @@ public abstract class LocalPostHandler extends RestJsonPostHandler {
                 .getAsJsonObject();
     }
 
-    private HttpResponse logResponse(final HttpRequest request, final String requestPath, final HttpResponse response) {
-        _logger.trace("API Response: " + requestPath + " : " + response.toString());
-        return response;
+    @Override
+    protected JsonObject onPost(final HttpRequest request, final JsonObject body, final JsonObject parameters) {
+        return execute(request, body, parameters);
     }
 
     @Override
-    protected HttpResponse onPost(final HttpRequest request, final JsonObject body, final JsonObject parameters) {
-        final String requestPath = request.getRequestPath();
-        final JsonObject result = execute(request, body, parameters);
-        
-        final HttpResponse httpResponse = new HttpResponse(result);
-        
-        return logResponse(request, requestPath, httpResponse);
-    }
-
-    @Override
-    protected HttpResponse onBadMessageField(final HttpRequest hr, final JsonElement je, final String field) {
+    protected JsonElement onBadMessageField(final HttpRequest hr, final JsonElement je, final String field) {
         _logger.error("onBadMessageField: " + field);
-        final JsonObject result = formatResponseMessage(-1, "onBadMessageField: " + field);
-        return new HttpResponse(result);
+        return formatResponseMessage(-1, "onBadMessageField: " + field);
     }
 
     @Override
-    protected HttpResponse onBadMessage(HttpRequest hr, JsonElement je) {
+    protected JsonElement onBadMessage(HttpRequest hr, JsonElement je) {
         _logger.error("onBadMessage: " + je.getAsString());
-        final JsonObject result = formatResponseMessage(-2, "onBadMessage: " + je.getAsString());
-        return new HttpResponse(result);
+        return formatResponseMessage(-2, "onBadMessage: " + je.getAsString());
     }
 
     @Override
-    protected HttpResponse onBadUrl(final HttpRequest hr, final String path) {
+    protected JsonElement onBadUrl(final HttpRequest hr, final String path) {
         _logger.error("onBadUrl: " + path);
-        final JsonObject result = formatResponseMessage(-3, "onBadUrl: " + path);
-        return new HttpResponse(result);
+        return formatResponseMessage(-3, "onBadUrl: " + path);
     }
 
     @Override

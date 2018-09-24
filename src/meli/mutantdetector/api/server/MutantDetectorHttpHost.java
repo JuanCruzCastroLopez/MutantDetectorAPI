@@ -2,8 +2,8 @@ package meli.mutantdetector.api.server;
 
 import com.sun.net.httpserver.HttpsConfigurator;
 import meli.mutantdetector.api.MutantDetectorAPI;
-import meli.mutantdetector.api.http.HttpHost;
 import org.apache.log4j.Logger;
+import whiz.net.servers.HttpHost;
 
 public class MutantDetectorHttpHost extends HttpHost {
     

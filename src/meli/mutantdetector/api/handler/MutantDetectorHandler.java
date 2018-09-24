@@ -4,8 +4,9 @@ import ace.gson.Json;
 import ace.gson.model.JsonModel;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import meli.mutantdetector.api.http.HttpRequest;
 import meli.mutantdetector.MutantDetector;
+import whiz.net.HttpStatus;
+import whiz.net.servers.HttpRequest;
 
 public class MutantDetectorHandler extends LocalPostHandler {
 
@@ -25,9 +26,11 @@ public class MutantDetectorHandler extends LocalPostHandler {
         
         final MutantDetector mutantDetector = new MutantDetector();
         if (mutantDetector.isMutant(dna)) {
-            return formatResponseMessage(0, "OK");
+            request.replyOk();
+            return null;
         }
-        return formatResponseMessage(-1, "Forbidden");
+        request.reply(HttpStatus.FORBIDDEN);
+        return null;
     }
 
 }
