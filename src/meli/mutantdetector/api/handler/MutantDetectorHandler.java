@@ -15,7 +15,7 @@ public class MutantDetectorHandler extends LocalPostHandler {
 
     @Override
     protected JsonModel modelPost() {
-        return new JsonModel().registerMandatoryNonEmptyArray("dna");
+        return new JsonModel().registerMandatoryArray("dna");
     }
 
     @Override

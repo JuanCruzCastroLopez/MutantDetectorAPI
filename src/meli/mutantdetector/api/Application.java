@@ -25,7 +25,7 @@ public class Application {
             final MutantDetectorHttpHost httpHost = new MutantDetectorHttpHost(port, threads, false, null);        
             httpHost.setName("");
             if (httpHost.hadException()) {
-                _logger.error("Error al inicializar el servidor.", (Exception) httpHost.getLastException());
+                _logger.error("Error initializing server.", (Exception) httpHost.getLastException());
                 System.exit(-1);
             }
             final MutantDetectorAPI api = new MutantDetectorAPI(httpHost);

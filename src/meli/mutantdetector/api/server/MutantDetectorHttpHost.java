@@ -15,11 +15,11 @@ public class MutantDetectorHttpHost extends HttpHost {
 
     @Override
     public void onStartListening() {
-        _logger.info("Inicializando servidor.");
+        _logger.info("Initializing server.");
     }
 
     @Override
     public void onStopListening() {
-        _logger.info("Finalizando servidor.");
+        _logger.info("Finalizing Server.");
     }
 }
