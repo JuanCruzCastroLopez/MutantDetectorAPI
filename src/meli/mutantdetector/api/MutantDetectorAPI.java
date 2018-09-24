@@ -2,13 +2,13 @@
 package meli.mutantdetector.api;
 
 import meli.mutantdetector.api.handler.MutantDetectorHandler;
-import meli.mutantdetector.api.server.ExampleHttpHost;
+import meli.mutantdetector.api.server.MutantDetectorHttpHost;
 
-public class ExampleAPI {
+public class MutantDetectorAPI {
 
-    private final ExampleHttpHost _httpHost;
+    private final MutantDetectorHttpHost _httpHost;
     
-    public ExampleAPI(final ExampleHttpHost httpHost) {
+    public MutantDetectorAPI(final MutantDetectorHttpHost httpHost) {
         _httpHost = httpHost;
     }
     

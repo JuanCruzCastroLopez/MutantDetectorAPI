@@ -6,13 +6,13 @@ import ace.gson.Json;
 import ace.text.Strings;
 import com.google.gson.JsonObject;
 import java.io.File;
-import meli.mutantdetector.api.ExampleAPI;
+import meli.mutantdetector.api.MutantDetectorAPI;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 public class Configurations {
 
-    private static Logger _logger = Logger.getLogger(ExampleAPI.class);
+    private static Logger _logger = Logger.getLogger(MutantDetectorAPI.class);
     
     private int _port;
     private int _threads;

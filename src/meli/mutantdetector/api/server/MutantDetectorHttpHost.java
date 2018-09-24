@@ -1,15 +1,15 @@
 package meli.mutantdetector.api.server;
 
 import com.sun.net.httpserver.HttpsConfigurator;
-import meli.mutantdetector.api.ExampleAPI;
+import meli.mutantdetector.api.MutantDetectorAPI;
 import meli.mutantdetector.api.http.HttpHost;
 import org.apache.log4j.Logger;
 
-public class ExampleHttpHost extends HttpHost {
+public class MutantDetectorHttpHost extends HttpHost {
     
-    private static Logger _logger = Logger.getLogger(ExampleAPI.class);
+    private static Logger _logger = Logger.getLogger(MutantDetectorAPI.class);
     
-    public ExampleHttpHost(final int port, final int threads, final boolean autostart, final HttpsConfigurator httpsConfigurator) {
+    public MutantDetectorHttpHost(final int port, final int threads, final boolean autostart, final HttpsConfigurator httpsConfigurator) {
         super(port, threads, autostart, httpsConfigurator);
     }
 
