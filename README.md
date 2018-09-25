@@ -22,3 +22,13 @@ La API inlcuye dos servicios posibles, a saber:
       ```
       {"count_mutant_dna":40,"count_human_dna":100,"ratio":0.4}
       ```
+      
+## Ejecución
+
+Ejecutar el comando *java -jar MutantDetectorAPI.jar* en una termina, estando en el directorio donde se encuentra el programa.
+
+### Configuración
+
+* El directorio de configuración *./config* contiene dos archivos necesarios para la ejecución de la aplicación, a saber:
+    * mutantdetectorapi.cfg
+    * log4j.properties
