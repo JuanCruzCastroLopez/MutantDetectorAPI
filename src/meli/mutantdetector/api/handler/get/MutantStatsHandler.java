@@ -1,11 +1,16 @@
 package meli.mutantdetector.api.handler.get;
 
+import ace.gson.Json;
 import com.google.gson.JsonObject;
+import meli.mutantdetector.api.MutantDetectorAPI;
 import meli.mutantdetector.api.database.DatabaseManager;
 import meli.mutantdetector.api.model.Stadistic;
+import org.apache.log4j.Logger;
 import whiz.net.servers.HttpRequest;
 
 public class MutantStatsHandler extends AbstractHttpHandler {
+    
+    private static Logger _logger = Logger.getLogger(MutantDetectorAPI.class);
 
     private final DatabaseManager _databaseManager;
 
@@ -16,10 +21,13 @@ public class MutantStatsHandler extends AbstractHttpHandler {
 
     @Override
     protected JsonObject onGet(HttpRequest request, final JsonObject body, final JsonObject parameters) {
+        _logger.trace("Request body: " + Json.JsonElementToString(body));
+        _logger.trace("Request parameters: " + Json.JsonElementToString(parameters));
+        
         final Stadistic stadistic = new Stadistic();
-        
+
         _databaseManager.executeSelect(stadistic);
-        
+
         return stadistic.toJsonObject();
     }
 

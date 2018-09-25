@@ -1,5 +1,6 @@
 package meli.mutantdetector.api.handler.post;
 
+import ace.gson.Json;
 import ace.gson.builders.JsonObjectBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -26,7 +27,13 @@ public abstract class LocalPostHandler extends RestJsonPostHandler {
 
     @Override
     protected JsonObject onPost(final HttpRequest request, final JsonObject body, final JsonObject parameters) {
-        return execute(request, body, parameters);
+        _logger.trace("Request body: " + Json.JsonElementToString(body));
+        _logger.trace("Request parameters: " + Json.JsonElementToString(parameters));
+        
+        final JsonObject response = execute(request, body, parameters);
+        
+        _logger.trace("Response: " + Json.JsonElementToString(response));
+        return response;
     }
 
     @Override
