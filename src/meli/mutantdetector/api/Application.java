@@ -2,6 +2,9 @@
 package meli.mutantdetector.api;
 
 import java.io.IOException;
+import meli.mutantdetector.api.database.DatabaseConnectionInfo;
+import meli.mutantdetector.api.database.DatabaseManager;
+import meli.mutantdetector.api.database.DatabaseVendorInfo;
 import meli.mutantdetector.api.server.MutantDetectorHttpHost;
 import meli.mutantdetector.api.utils.Configurations;
 import meli.mutantdetector.api.utils.Constants;
@@ -18,21 +21,29 @@ public class Application {
         }
         final Configurations configurations = new Configurations();
         if (configurations.setUpLog() && configurations.loadApiConfig()) {
-            
+
             final int port = configurations.getPort();
             final int threads = configurations.getThreads();
-            
-            final MutantDetectorHttpHost httpHost = new MutantDetectorHttpHost(port, threads, false, null);        
+
+            final DatabaseConnectionInfo databaseConnectionInfo = configurations.getDatabaseConnectionInfo();
+            final DatabaseVendorInfo databaseVendorInfo = configurations.getDatabaseVendorInfo();
+
+            final DatabaseManager databaseManager = new DatabaseManager(databaseVendorInfo, databaseConnectionInfo);
+            if (!databaseManager.isConnected()) {
+                System.exit(-1);
+            }
+
+            final MutantDetectorHttpHost httpHost = new MutantDetectorHttpHost(port, threads, false, null);
             httpHost.setName("");
             if (httpHost.hadException()) {
                 _logger.error("Error initializing server.", (Exception) httpHost.getLastException());
                 System.exit(-1);
             }
-            final MutantDetectorAPI api = new MutantDetectorAPI(httpHost);
+            final MutantDetectorAPI api = new MutantDetectorAPI(httpHost, databaseManager);
 
             _logger.info(Constants.INIT_MESSAGE);
             _logger.info("Application start.");
-            
+
             api.start();
         } else {
             System.exit(-1);

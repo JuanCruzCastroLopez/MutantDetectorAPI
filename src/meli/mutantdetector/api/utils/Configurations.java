@@ -7,6 +7,8 @@ import ace.text.Strings;
 import com.google.gson.JsonObject;
 import java.io.File;
 import meli.mutantdetector.api.MutantDetectorAPI;
+import meli.mutantdetector.api.database.DatabaseConnectionInfo;
+import meli.mutantdetector.api.database.DatabaseVendorInfo;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -16,6 +18,8 @@ public class Configurations {
     
     private int _port;
     private int _threads;
+    private DatabaseConnectionInfo _databaseConnectionInfo;
+    private DatabaseVendorInfo _dataVendorInfo;
     
     public Configurations() {
         _port = 0;
@@ -33,9 +37,8 @@ public class Configurations {
     }
 
     private boolean validateConfig(final JsonObject config) {
-        //TODO: Realizar el json de configuración
         if (Ace.assigned(config)) {
-            if (config.has("port") && config.has("threads")) {
+            if (config.has("port") && config.has("threads") && config.has("database")) {
                 return true;
             }
         }
@@ -54,6 +57,20 @@ public class Configurations {
         }
         _port = Json.obtainInteger(config, Constants.PORT);
         _threads = Json.obtainInteger(config, Constants.THREADS);
+        
+        final JsonObject databaseConfig = Json.obtainJsonObject(config, "database");
+        final String host = Json.obtainString(databaseConfig, "host");
+        final int port = Json.obtainInteger(databaseConfig, "port");
+        final String name = Json.obtainString(databaseConfig, "name");
+        final String username = Json.obtainString(databaseConfig, "username");
+        final String password = Json.obtainString(databaseConfig, "password");
+        final String schema = Json.obtainString(databaseConfig, "schema");
+        final String tablespaceData = Json.obtainString(databaseConfig, "tablespaceData");
+        final String tablespaceIndexes = Json.obtainString(databaseConfig, "tablespaceIndexes");
+        
+        _databaseConnectionInfo = new DatabaseConnectionInfo(host, port, name, username, password, schema, tablespaceData, tablespaceIndexes);
+        _dataVendorInfo = new DatabaseVendorInfo(DatabaseVendorInfo.MYSQL_VENDOR_NAME, DatabaseVendorInfo.MYSQL_URI_SCHEME, DatabaseVendorInfo.MYSQL_DRIVER_NAME);
+        
         return true;
     }
     
@@ -63,6 +80,14 @@ public class Configurations {
     
     public int getThreads() {
         return _threads;
+    }
+    
+    public DatabaseConnectionInfo getDatabaseConnectionInfo() {
+        return _databaseConnectionInfo;
+    }
+    
+    public DatabaseVendorInfo getDatabaseVendorInfo() {
+        return _dataVendorInfo;
     }
 
 }

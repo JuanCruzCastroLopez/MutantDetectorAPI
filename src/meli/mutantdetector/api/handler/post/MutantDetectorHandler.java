@@ -1,4 +1,4 @@
-package meli.mutantdetector.api.handler;
+package meli.mutantdetector.api.handler.post;
 
 import ace.gson.Json;
 import ace.gson.model.JsonModel;
