@@ -26,7 +26,7 @@ public class Stadistic implements DBObjectInterface, JsonParseable {
 
     private double calculateRatio() {
         try {
-            return (_countHumanDna / _countMutantDna);
+            return (_countMutantDna / (double)_countHumanDna);
         } catch (final ArithmeticException ex) {
             return 0d;
         }
