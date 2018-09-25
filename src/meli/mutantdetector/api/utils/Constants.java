@@ -1,4 +1,3 @@
-/* AMCO @ 2018 */
 
 package meli.mutantdetector.api.utils;
 

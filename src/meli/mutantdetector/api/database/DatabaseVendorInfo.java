@@ -1,4 +1,3 @@
-/* AMCO @ 2016 */
 package meli.mutantdetector.api.database;
 
 public class DatabaseVendorInfo {
