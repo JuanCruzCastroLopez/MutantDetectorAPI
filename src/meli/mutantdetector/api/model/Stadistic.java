@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Stadistic implements DBObjectInterface, JsonParseable {
-    
+
     private static final String COUNT_DNA_FIELD = "COUNT_DNA";
     private static final String IS_MUTANT_FIELD = "IS_MUTANT";
     private static final String IS_MUTANT = "T";
@@ -25,11 +25,10 @@ public class Stadistic implements DBObjectInterface, JsonParseable {
     }
 
     private double calculateRatio() {
-        try {
-            return (_countMutantDna / (double)_countHumanDna);
-        } catch (final ArithmeticException ex) {
+        if (_countHumanDna == 0) {
             return 0d;
         }
+        return (_countMutantDna / (double) _countHumanDna);
     }
 
     @Override
@@ -52,7 +51,7 @@ public class Stadistic implements DBObjectInterface, JsonParseable {
         jo.add(COUNT_MUTANT_DNA_KEY, Json.num(_countMutantDna));
         jo.add(COUNT_HUMAN_DNA_KEY, Json.num(_countHumanDna));
         jo.add(RATIO_KEY, Json.num(calculateRatio()));
-        
+
         return jo;
     }
 
