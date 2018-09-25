@@ -1,16 +1,16 @@
 package meli.mutantdetector.api.model;
 
+import meli.mutantdetector.api.database.DBObjectInterface;
 import ace.gson.Json;
 import com.google.gson.JsonObject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Stadistic implements DBObject, JsonParseable {
+public class Stadistic implements DBObjectInterface, JsonParseable {
     
-    private static final String QUERY = "";
-
-    private static final String COUNT_MUTANT_DNA = "COUNT_MUTANT_DNA";
-    private static final String COUNT_HUMAN_DNA = "COUNT_HUMAN_DNA";
+    private static final String COUNT_DNA_FIELD = "COUNT_DNA";
+    private static final String IS_MUTANT_FIELD = "IS_MUTANT";
+    private static final String IS_MUTANT = "T";
 
     private static final String COUNT_MUTANT_DNA_KEY = "count_mutant_dna";
     private static final String COUNT_HUMAN_DNA_KEY = "count_human_dna";
@@ -36,8 +36,12 @@ public class Stadistic implements DBObject, JsonParseable {
     public void setByResultSet(final ResultSet rs) throws SQLException {
         if (rs != null) {
             while (rs.next()) {
-                _countMutantDna = rs.getInt(COUNT_MUTANT_DNA);
-                _countHumanDna = rs.getInt(COUNT_HUMAN_DNA);
+                final String isMutant = rs.getString(IS_MUTANT_FIELD);
+                if (isMutant.equals(IS_MUTANT)) {
+                    _countMutantDna = rs.getInt(COUNT_DNA_FIELD);
+                } else {
+                    _countHumanDna = rs.getInt(COUNT_DNA_FIELD);
+                }
             }
         }
     }
@@ -54,8 +58,7 @@ public class Stadistic implements DBObject, JsonParseable {
 
     @Override
     public String getQuery() {
-        //TODO
-        return QUERY;
+        return "SELECT IS_MUTANT, COUNT(*) AS COUNT_DNA FROM VERIFIED_DNAS GROUP BY IS_MUTANT";
     }
 
 }

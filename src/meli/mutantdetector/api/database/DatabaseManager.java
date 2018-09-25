@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import meli.mutantdetector.api.MutantDetectorAPI;
 import org.apache.log4j.Logger;
-import meli.mutantdetector.api.model.DBObject;
 
 public class DatabaseManager {
 
@@ -36,7 +35,7 @@ public class DatabaseManager {
         _name = connectionInfo.getName();
         _jdbcUrl = Strings.concat(
                 vendorInfo.getUriScheme(), STRINGS.COLON,
-                DatabaseVendorInfo.MYSQL_VENDOR_NAME.equals(_vendor) ? STRINGS.AT : STRINGS.EMPTY,
+                DatabaseVendorInfo.ORACLE_VENDOR_NAME.equals(_vendor) ? STRINGS.AT : STRINGS.EMPTY,
                 STRINGS.SLASH + STRINGS.SLASH, _host, STRINGS.COLON, _port, STRINGS.SLASH, _name
         );
         _username = connectionInfo.getUsername();
@@ -83,7 +82,7 @@ public class DatabaseManager {
             _isConnected = true;
             _logger.info("Connected database. Vendor: " + _vendor + " Host: " + _host + " Port: " + _port);
         } catch (final Exception e) {
-            _logger.info("Unconnected database. Vendor: " + _vendor + " Host: " + _host + " Port: " + _port);
+            _logger.info("Unconnected database. Vendor: " + _vendor + " Host: " + _host + " Port: " + _port, e);
         }
     }
 
@@ -106,15 +105,30 @@ public class DatabaseManager {
         return _isConnected;
     }
 
-    public DBObject executeSelect(final DBObject settable) {
+    public boolean executeUpdate(final Queryable queryable) {
+        if (isActiveConnection()) {
+            PreparedStatement stmt = null;
+            try {
+                stmt = _connection.prepareStatement(queryable.getQuery());
+                return stmt.executeUpdate() > 0;
+            } catch (final Exception e) {
+                _logger.info("Database unexecutable ", e);
+            } finally {
+                closeResources(stmt, null);
+            }
+        }
+        return false;
+    }
+
+    public DBObjectInterface executeSelect(final DBObjectInterface dbObject) {
         if (isActiveConnection()) {
             PreparedStatement stmt = null;
             ResultSet rs = null;
             try {
-                stmt = _connection.prepareStatement(settable.getQuery());
+                stmt = _connection.prepareStatement(dbObject.getQuery());
                 rs = stmt.executeQuery();
-                settable.setByResultSet(rs);
-                return settable;
+                dbObject.setByResultSet(rs);
+                return dbObject;
             } catch (final Exception e) {
                 _logger.info("Database unexecutable ", e);
             } finally {

@@ -2,6 +2,10 @@ package meli.mutantdetector.api.database;
 
 public class DatabaseVendorInfo {
 
+    public static final String ORACLE_VENDOR_NAME = "ORACLE";
+    public static final String ORACLE_URI_SCHEME = "jdbc:oracle:thin";
+    public static final String ORACLE_DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
+
     public static final String MYSQL_VENDOR_NAME = "MYSQL";
     public static final String MYSQL_URI_SCHEME = "jdbc:mysql";
     public static final String MYSQL_DRIVER_NAME = "com.mysql.jdbc.Driver";

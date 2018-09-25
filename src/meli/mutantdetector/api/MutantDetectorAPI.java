@@ -16,7 +16,7 @@ public class MutantDetectorAPI {
     }
     
     public void start() {
-        _httpHost.registerHandler(new MutantDetectorHandler("/mutant/"));
+        _httpHost.registerHandler(new MutantDetectorHandler("/mutant/", _databaseManager));
         _httpHost.registerHandler(new MutantStatsHandler("/stats", "/stats", _databaseManager));
         _httpHost.start();
     }

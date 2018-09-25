@@ -5,13 +5,18 @@ import ace.gson.model.JsonModel;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import meli.mutantdetector.MutantDetector;
+import meli.mutantdetector.api.database.DatabaseManager;
+import meli.mutantdetector.api.model.DnaResult;
 import whiz.net.HttpStatus;
 import whiz.net.servers.HttpRequest;
 
 public class MutantDetectorHandler extends LocalPostHandler {
 
-    public MutantDetectorHandler(final String route) {
+    private final DatabaseManager _databaseManager;
+
+    public MutantDetectorHandler(final String route, final DatabaseManager databaseManager) {
         super(MutantDetectorHandler.class, route, route);
+        _databaseManager = databaseManager;
     }
 
     @Override
@@ -25,11 +30,16 @@ public class MutantDetectorHandler extends LocalPostHandler {
         final String[] dna = Json.convertJsonArraytoStringArray(ja);
         
         final MutantDetector mutantDetector = new MutantDetector();
+
+        final DnaResult dnaResult;
         if (mutantDetector.isMutant(dna)) {
+            dnaResult = new DnaResult(dna, true);
             request.replyOk();
-            return null;
+        } else {
+            request.reply(HttpStatus.FORBIDDEN);
+            dnaResult = new DnaResult(dna, false);
         }
-        request.reply(HttpStatus.FORBIDDEN);
+        _databaseManager.executeUpdate(dnaResult);
         return null;
     }
 

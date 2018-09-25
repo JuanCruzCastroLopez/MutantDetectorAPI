@@ -1,6 +1,7 @@
 package meli.mutantdetector.api.utils;
 
 import ace.Ace;
+import ace.constants.STRINGS;
 import ace.gson.Json;
 import ace.text.Strings;
 import com.google.gson.JsonObject;
@@ -63,9 +64,9 @@ public class Configurations {
         final String name = Json.obtainString(databaseConfig, "name");
         final String username = Json.obtainString(databaseConfig, "username");
         final String password = Json.obtainString(databaseConfig, "password");
-        final String schema = Json.obtainString(databaseConfig, "schema");
-        final String tablespaceData = Json.obtainString(databaseConfig, "tablespaceData");
-        final String tablespaceIndexes = Json.obtainString(databaseConfig, "tablespaceIndexes");
+        final String schema = Json.obtainString(databaseConfig, "schema", STRINGS.EMPTY);
+        final String tablespaceData = Json.obtainString(databaseConfig, "tablespaceData", STRINGS.EMPTY);
+        final String tablespaceIndexes = Json.obtainString(databaseConfig, "tablespaceIndexes", STRINGS.EMPTY);
         
         _databaseConnectionInfo = new DatabaseConnectionInfo(host, port, name, username, password, schema, tablespaceData, tablespaceIndexes);
         _dataVendorInfo = new DatabaseVendorInfo(DatabaseVendorInfo.MYSQL_VENDOR_NAME, DatabaseVendorInfo.MYSQL_URI_SCHEME, DatabaseVendorInfo.MYSQL_DRIVER_NAME);

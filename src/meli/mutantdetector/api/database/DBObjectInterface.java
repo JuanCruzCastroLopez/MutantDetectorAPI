@@ -1,13 +1,11 @@
 
-package meli.mutantdetector.api.model;
+package meli.mutantdetector.api.database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface DBObject {
+public interface DBObjectInterface extends Queryable {
     
     public void setByResultSet(final ResultSet rs) throws SQLException;
-
-    public String getQuery();
 
 }
